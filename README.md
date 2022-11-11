@@ -13,3 +13,28 @@
 - A se vedea [documentatia](https://github.com/liviu-moraru/github-actions-06-env)
 - A fost creat in repo, environmentul **testing** (posibil doar pt. repo publice)
 - Au fost definite var. de mediu pt. **testing**: MONGODB_USERNAME si MONGODB_PASSWORD
+
+## Put a job to run into container
+
+```yaml
+jobs:
+  test:
+    environment: testing
+    runs-on: ubuntu-latest
+    container: node:16
+```
+- node:16 este o imagine existenta in Docker Hub
+
+- Alta varianta este:
+
+```yaml
+jobs:
+  test:
+    environment: testing
+    runs-on: ubuntu-latest
+    container: 
+      image: node:16
+      env:
+```
+**env** declara variabilele de mediu pentru container (folosite la lansarea containerului)
+
