@@ -7,3 +7,9 @@
 - Containerele definite de utilizator ruleaza si ele pe un runner, dar pasii job-ului vor fi rulati in interiorul containerului.
 - Se pot create servicii suplimentare (Services), care sunt containere suplimentare utilizate in pasi (ex. Testing Database)
 - 
+
+## Configurare acces la MongoDB cloud
+
+- A se vedea [documentatia](https://github.com/liviu-moraru/github-actions-06-env)
+- A fost creat in repo, environmentul **testing** (posibil doar pt. repo publice)
+- Au fost definite var. de mediu pt. **testing**: MONGODB_USERNAME si MONGODB_PASSWORD
