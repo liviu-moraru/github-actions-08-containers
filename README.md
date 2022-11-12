@@ -103,3 +103,47 @@ jobs:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: example
 ```
+
+### Exemplu pt. un job care ruleaza direct intr-un runner
+
+- In aceasta situatie, service container-ul trebuie sa externalizeze portul pe care asculta daemonul mongo (27017)
+
+```yaml
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - '27017:27017'
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: example
+```
+
+**Atentie!**: 27017:27017 trebuie pus intre ghilimele (declarat ca string). In lipsa lor a dat eroare (probabil, fiindca incepe cu cifra crede ca e valoare numerica si apoi da de caracterul ':')
+
+- In networkul creat, service containerul este accesat ca 127.0.0.1:27017, deci valoarea lui mongo:27017 in stringul de conexiune `mongodb://root:example@mongo:27017/` este `127.0.0.1:27017`
+- Configurare finala
+
+```yaml
+jobs:
+  test:
+    environment: testing
+    runs-on: ubuntu-latest
+    # container: node:16
+
+    env:
+      MONGODB_CONNECTION_PROTOCOL: mongodb
+      MONGODB_CLUSTER_ADDRESS: 127.0.0.1:27017
+      MONGODB_USERNAME: root
+      MONGODB_PASSWORD: example
+      PORT: 8080
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - '27017:27017'
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: example
+```
+**Observatie**: MONGODB_CLUSTER_ADDRESS poate fi definit si doar ca 127.0.0.1, fara port, pentru ca portul default pt. daemonul mongodb este 27017, externalizat de service container
